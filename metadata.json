@@ -1,0 +1,5 @@
+{
+  "name": "ScribeTable - Handwritten to Excel",
+  "description": "A high-precision tool to convert images of handwritten tabular data into editable CSV and Excel files using Gemini AI.",
+  "requestFramePermissions": []
+}
