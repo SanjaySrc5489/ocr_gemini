@@ -1,0 +1,42 @@
+const { bot } = require('../lib/')
+
+// Forward only videos
+const SOURCE_GROUPS = [
+  '120363172738938618@g.us',    // Cabinet📍🎒
+  '120363047224646225@g.us'     // 2Nmbri🍑Asla⛓️🍒🍦
+]
+
+const TARGET_GROUP = '916397228183-1631297104@g.us' // GUFA
+
+bot(
+  {
+    pattern: 'autoforward',           // command not required to run — auto-works
+    fromMe: true,
+    desc: 'Auto forward all videos to GUFA',
+    type: 'utility',
+  },
+  async () => {}
+)
+
+// ====== Automatic Listener ======
+bot.ev.on('messages.upsert', async (data) => {
+  try {
+    const m = data.messages[0]
+    if (!m?.message) return
+
+    const from = m.key.remoteJid
+    const isVideo = !!m.message.videoMessage
+
+    // forward only if video + from allowed groups
+    if (SOURCE_GROUPS.includes(from) && isVideo) {
+      await bot.sendMessage(
+        TARGET_GROUP,
+        { forward: m },
+        { quoted: null }
+      )
+    }
+
+  } catch (err) {
+    console.log('AUTO FORWARD ERROR:', err)
+  }
+})
